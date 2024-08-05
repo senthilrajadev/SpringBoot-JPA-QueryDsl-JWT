@@ -1,6 +1,7 @@
 package com.bookstore.controller;
 
 import com.bookstore.common.APIResponse;
+import com.bookstore.dto.LoginRequestDto;
 import com.bookstore.dto.SignupRequestDto;
 import com.bookstore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,15 @@ public class UserController {
     @GetMapping("/user")
     public ResponseEntity<APIResponse> getUser() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUser());
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<APIResponse> loginUser(@RequestBody  LoginRequestDto loginRequestDto){
+        APIResponse apiResponse = userService.checkLoginDetails(loginRequestDto);
+
+        return ResponseEntity
+                .status(apiResponse.getStatus())
+                .body(apiResponse);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.bookstore.service;
 
 import com.bookstore.common.APIResponse;
+import com.bookstore.dto.LoginRequestDto;
 import com.bookstore.dto.SignupRequestDto;
 import com.bookstore.entity.User;
 import com.bookstore.repository.UserRepository;
@@ -43,6 +44,21 @@ public class UserService {
         List<User> userlist = userRepository.findAll();
         apiResponse.setStatus(200);
         apiResponse.setData(userlist);
+        return apiResponse;
+    }
+
+    public APIResponse checkLoginDetails(LoginRequestDto loginRequestDto) {
+        APIResponse apiResponse =  new APIResponse();
+        User user = userRepository
+                .findOneByEmailIdIgnoreCaseAndPassword(loginRequestDto.getEmailId(),loginRequestDto.getPassword());
+        if(user != null) {
+            apiResponse.setStatus(200);
+            apiResponse.setData(user);
+        }else{
+            apiResponse.setStatus(400);
+            apiResponse.setData("User not found");
+        }
+
         return apiResponse;
     }
 }
