@@ -16,6 +16,7 @@ public class BookService {
 
     public APIResponse getAllBooks(Integer yop) {
         APIResponse apiResponse = new APIResponse();
+        apiResponse.setStatus(200);
         List<Book> bookList = bookRepo.getBooksByDslQuery(yop);
         apiResponse.setData(bookList);
         return apiResponse;
