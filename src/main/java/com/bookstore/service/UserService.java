@@ -5,17 +5,23 @@ import com.bookstore.dto.LoginRequestDto;
 import com.bookstore.dto.SignupRequestDto;
 import com.bookstore.entity.User;
 import com.bookstore.repository.UserRepository;
+import com.bookstore.util.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    JwtUtils jwtUtils;
 
 
     public APIResponse signUpUser(SignupRequestDto signupRequestDto) {
@@ -51,13 +57,18 @@ public class UserService {
         APIResponse apiResponse =  new APIResponse();
         User user = userRepository
                 .findOneByEmailIdIgnoreCaseAndPassword(loginRequestDto.getEmailId(),loginRequestDto.getPassword());
-        if(user != null) {
-            apiResponse.setStatus(200);
-            apiResponse.setData(user);
-        }else{
+        if(user == null) {
             apiResponse.setStatus(400);
             apiResponse.setData("User not found");
+            return  apiResponse;
         }
+        String jwt = jwtUtils.generateJwt(user);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("accessToken",jwt);
+        apiResponse.setStatus(200);
+        apiResponse.setData(map);
+
 
         return apiResponse;
     }
