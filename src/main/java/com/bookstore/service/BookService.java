@@ -1,6 +1,7 @@
 package com.bookstore.service;
 
 import com.bookstore.common.APIResponse;
+import com.bookstore.dto.BookQueryDslDto;
 import com.bookstore.entity.Book;
 import com.bookstore.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +18,9 @@ public class BookService {
     public APIResponse getAllBooks(Integer yop) {
         APIResponse apiResponse = new APIResponse();
         apiResponse.setStatus(200);
-        List<Book> bookList = bookRepo.getBooksByDslQuery(yop);
-        apiResponse.setData(bookList);
+//        List<Book> bookList = bookRepo.getBooksByDslQuery(yop);
+        List<BookQueryDslDto> bookQueryDslDtoList = bookRepo.getBookDtosByDslQuery(yop);
+        apiResponse.setData(bookQueryDslDtoList);
         return apiResponse;
     }
 }
