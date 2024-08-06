@@ -1,5 +1,6 @@
 package com.bookstore.util;
 
+import com.bookstore.common.AccessDeniedException;
 import com.bookstore.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -12,8 +13,8 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 
-    private static String secret = "wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY";
-    private static long expiryDuration = 60 * 60 * 1000;
+    private static final String secret = "wJalrXUtnFEMIK7MDENGbPxRfiCYEXAMPLEKEY";
+    private static final long expiryDuration = 60 * 60 * 1000;
 
     public String generateJwt(User user){
         long now = System.currentTimeMillis();
@@ -36,5 +37,21 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS256,secret.getBytes(StandardCharsets.UTF_8))
                 .compact();
 
+    }
+
+    public Claims verify(String authorization) throws AccessDeniedException {
+
+        try {
+//            Jwts.parser().setSigningKey(secret.getBytes(StandardCharsets.UTF_8)).parseClaimsJws(authorization);
+
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret.getBytes(StandardCharsets.UTF_8))
+                    .parseClaimsJws(authorization)
+                    .getBody();
+//            System.out.println(claims.get("userName"));
+            return claims;
+        } catch (Exception ex) {
+            throw new AccessDeniedException("Access Denied");
+        }
     }
 }
