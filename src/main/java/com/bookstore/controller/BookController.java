@@ -2,6 +2,7 @@ package com.bookstore.controller;
 
 import com.bookstore.common.APIResponse;
 import com.bookstore.dto.BookBulkRequestDto;
+import com.bookstore.dto.BookEditionRequestDto;
 import com.bookstore.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,5 +26,14 @@ public class BookController {
         apiResponse.setStatus(HttpStatus.OK.value());
         apiResponse.setData("Success");
         return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+    }
+    @PostMapping("/addBooksEdition")
+    public ResponseEntity<APIResponse> addBookEdition(@RequestBody BookEditionRequestDto bookEditionRequestDto){
+        APIResponse apiResponse = new APIResponse();
+        APIResponse apiResponse1 = bookService.addBookEditionData(bookEditionRequestDto);
+        apiResponse.setStatus(apiResponse1.getStatus());
+        apiResponse.setData(apiResponse1.getData());
+        return ResponseEntity.status(HttpStatus.OK).body(apiResponse);
+
     }
 }
