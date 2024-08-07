@@ -1,15 +1,15 @@
 package com.bookstore.entity;
 
 import com.querydsl.core.annotations.QueryEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name="book")
 public class Book {
     @Id
+    @GeneratedValue(generator = "abc") //mysql didnt support GenerationType.SEQUENCE .so used other method
+    @GenericGenerator(name="abc", strategy = "increment")
     private Long id;
     private String title;
     private String author;
