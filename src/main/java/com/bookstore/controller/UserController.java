@@ -49,7 +49,8 @@ public class UserController {
     }
 
     @PostMapping("/privateapi")
-    public ResponseEntity<APIResponse> privateApi(@RequestHeader(value="authorization",defaultValue = "") String auth) {
+    public ResponseEntity<APIResponse>
+    privateApi(@RequestHeader(value="authorization",defaultValue = "") String auth) {
         APIResponse apiResponse = new APIResponse();
 
 //        jwtUtils.verify(auth);

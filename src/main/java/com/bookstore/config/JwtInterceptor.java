@@ -22,7 +22,8 @@ public class JwtInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
 
         String auth = request.getHeader("authorization");
         if(!(request.getRequestURI().contains("login") || request.getRequestURI().contains("signup"))){
